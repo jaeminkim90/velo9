@@ -41,7 +41,7 @@ class PostControllerTest {
 	@Test
 	void writeGet() throws Exception {
 
-		mockMvc.perform(MockMvcRequestBuilders.get("/write")
+		mockMvc.perform(get("/write")
 				.param("id", "1"))
 			.andExpect(status().isOk())
 			.andDo(document("writeGet",

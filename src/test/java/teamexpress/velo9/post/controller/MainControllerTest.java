@@ -31,7 +31,7 @@ public class MainControllerTest {
 
 		mockMvc.perform(get("/")
 				.param("tagSelect", "false")
-				.param("content", "")
+				.param("content", "test")
 				.param("page", "0")
 				.param("sortValue", "old")
 			)

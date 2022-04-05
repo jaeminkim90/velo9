@@ -42,8 +42,8 @@ public class PostController {
 
 	@PostMapping("/write")
 	public Result write(@RequestBody PostSaveDTO postSaveDTO) {
-		Long postId = postService.write(postSaveDTO);
-		tagService.addTags(postId, postSaveDTO.getTagNames());
+		Long postId = postService.write(postSaveDTO); // 받아온 JSON data를 DTO에 받아 저장(업데이트)
+		tagService.addTags(postId, postSaveDTO.getTagNames()); // JSON 데이터에서 tag를 따로 저장
 		tagService.removeUselessTags();
 		return new Result<>(postId);
 	}

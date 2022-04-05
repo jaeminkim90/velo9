@@ -52,6 +52,7 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
 
 	@Override
 	public Page<Post> search(SearchCondition condition, Pageable pageable) {
+
 		JPAQuery<Post> query = queryFactory
 			.selectFrom(post)
 			.join(post.postThumbnail).fetchJoin()

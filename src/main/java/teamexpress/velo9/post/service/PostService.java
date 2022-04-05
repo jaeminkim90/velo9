@@ -56,17 +56,20 @@ public class PostService {
 
 	@Transactional
 	public Long write(PostSaveDTO postSaveDTO) {
-		Post findPost = postRepository.findById(postSaveDTO.getPostId()).orElse(new Post());
-		Member findMember = getMember(postSaveDTO.getMemberId());
+		Post findPost = postRepository.findById(postSaveDTO.getPostId()).orElse(new Post()); // 포스트 존재하며 불러오고, 아닐 경우 새로 생성
+		Member findMember = getMember(postSaveDTO.getMemberId());// member 찾아온다
 
+		// 없는 member일 경우 예외 발생
 		if (findMember == null) {
 			throw new IllegalStateException("잘못된 요청입니다.");
 		}
 
+		// post의 id와 member의 id가 같은지 여부를 확인. 같지 않을 경우 예외 발생
 		if (!Objects.equals(findPost.getMember().getId(), findMember.getId())) {
 			throw new IllegalStateException("잘못된 요청입니다.");
 		}
 
+		// 파라미터로 받아온 DTO의 정보를 이용해 새로운 post 엔티티를 생성한다
 		findPost.newOrEdit(
 			postSaveDTO.getTitle(),
 			postSaveDTO.getIntroduce(),
@@ -74,7 +77,7 @@ public class PostService {
 			postSaveDTO.getAccess(),
 			findMember);
 
-		return findPost.getId();
+		return findPost.getId(); // 다 만들어지면 id를 반환한다
 	}
 
 	@Transactional
