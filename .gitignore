@@ -6,7 +6,7 @@ build/
 !**/src/test/**/build/
 
 src/main/resources/
-src/main/java/teamexpress/velo9/test
+src/test/java/teamexpress/velo9/test
 
 ### STS ###
 .apt_generated
