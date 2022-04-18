@@ -1,0 +1,39 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 좋아요 누르기 [ /love, POST ]
+
+=== request
+
+include::{snippets}/love/request-body.adoc[]
+
+include::{snippets}/love/request-fields.adoc[]
+
+== 시리즈 목록 보기 [ /getSeriesList, GET ]
+
+=== 1. request
+
+include::{snippets}/seriesList/http-request.adoc[]
+
+=== 2. response
+
+include::{snippets}/seriesList/response-body.adoc[]
+
+include::{snippets}/seriesList/response-fields.adoc[]
+
+== 글 작성 중 시리즈 추가하기 [ /addSeries, POST ]
+
+=== request
+
+include::{snippets}/addSeries/request-body.adoc[]
+
+include::{snippets}/addSeries/request-fields.adoc[]
+
+== 시리즈 삭제하기 [ /deleteSeries, POST ]
+
+=== request
+
+include::{snippets}/deleteSeries/httpie-request.adoc[]
+
+include::{snippets}/deleteSeries/request-parameters.adoc[]

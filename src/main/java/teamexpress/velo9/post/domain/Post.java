@@ -1,49 +1,49 @@
 package teamexpress.velo9.post.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.util.StringUtils;
 import teamexpress.velo9.member.domain.Member;
-import teamexpress.velo9.member.domain.ReadPost;
 
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@EntityListeners(value = {AuditingEntityListener.class})
+@Builder
 public class Post {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "post_id")
 	private Long id;
 	private String title;
 	private String introduce;
 	private String content;
-	private int likeCount;
-	private int replyCount;
+	private int loveCount;
 	private int viewCount;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -54,14 +54,23 @@ public class Post {
 	@JoinColumn(name = "series_id")
 	private Series series;
 
-	@OneToOne(mappedBy = "post")
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "post_thumbnail_id")
 	private PostThumbnail postThumbnail;
 
-	@ManyToMany(mappedBy = "posts")
-	private List<Tag> tags = new ArrayList<>();
+	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "temporary_post_id")
+	private TemporaryPost temporaryPost;
+
+	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	@JsonIgnore
+	private List<PostTag> postTags = new ArrayList<>();
 
 	@Enumerated(EnumType.STRING)
 	private PostStatus status;
+
+	@Enumerated(EnumType.STRING)
+	private PostAccess access;
 
 	@CreatedDate
 	@Column(name = "created_date")
@@ -71,7 +80,25 @@ public class Post {
 	@Column(name = "updated_date")
 	private LocalDateTime updatedDate;
 
-	@OneToMany(mappedBy = "post")
-	@JsonIgnore
-	private List<ReadPost> readPosts = new ArrayList<>();
+	public void edit(String title, String introduce, String content, String access, Series series, PostThumbnail postThumbnail) {
+		this.title = title;
+		if (StringUtils.hasText(introduce)) {
+			this.introduce = introduce;
+		}
+		this.content = content;
+		if (StringUtils.hasText(access)) {
+			this.access = PostAccess.valueOf(access);
+		}
+		if (this.status == PostStatus.TEMPORARY) {
+			this.createdDate = LocalDateTime.now();
+		}
+		this.status = PostStatus.GENERAL;
+		this.series = series;
+		this.postThumbnail = postThumbnail;
+		this.temporaryPost = null;
+	}
+
+	public void addViewCount() {
+		this.viewCount++;
+	}
 }

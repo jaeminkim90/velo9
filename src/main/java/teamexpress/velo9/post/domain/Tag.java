@@ -1,20 +1,16 @@
 package teamexpress.velo9.post.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import lombok.AccessLevel;
+import javax.persistence.OneToMany;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teamexpress.velo9.common.domain.BaseEntity;
@@ -22,19 +18,21 @@ import teamexpress.velo9.common.domain.BaseEntity;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
+@Builder
 public class Tag extends BaseEntity {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "tag_id")
 	private Long id;
 	private String name;
 
-	@ManyToMany
-	@JoinTable(name = "post_tag",
-		joinColumns = @JoinColumn(name = "tag_id"),
-		inverseJoinColumns = @JoinColumn(name = "post_id"))
+	@OneToMany(mappedBy = "tag")
 	@JsonIgnore
-	private List<Post> posts = new ArrayList<>();
+	private List<PostTag> postTags = new ArrayList<>();
+
+	public Tag(String name) {
+		this.name = name;
+	}
 }

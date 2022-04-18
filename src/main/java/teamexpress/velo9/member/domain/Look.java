@@ -4,12 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import teamexpress.velo9.post.domain.Post;
@@ -17,12 +17,13 @@ import teamexpress.velo9.post.domain.Post;
 @Entity
 @Getter
 @AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReadPost {
+@NoArgsConstructor
+@Builder
+public class Look {
 
 	@Id
-	@GeneratedValue
-	@Column(name = "read_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "look_id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)

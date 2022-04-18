@@ -1,0 +1,133 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 헤더정보 가져오기 [ /getHeaderInfo, GET ]
+
+include::{snippets}/header/response-body.adoc[]
+
+include::{snippets}/header/response-fields.adoc[]
+
+* 세션문제가 해결되었습니다. 기존에는 memberId가 필요한 요청때마다(글작성, 정보보기 등)
+프론트에서 session.getAttr()하여 memberId를 받아와서 사용하게 하려고 했으나,
+포트번호가 상이한 문제로 세션이 공유되지 않아 프론트에서는 위 요청을 하면 현재 로그인 된(백엔드 쪽 세션)사람의 id와
+헤더를 꾸밀수 있는 정보들을 반환하여 줍니다. 모든 페이지 마다 헤더정보를 요구하지 마시고
+로그인 된 직후 딱 한번만 요청하게 끔 로직을 처리하여 로그아웃 되기 전까지는 계속 가지고 있을 수 있게
+개발하여 주시길 바랍니다. 로그아웃이 되면 헤더를 적절히 바꾸어 주시길 바랍니다.
+
+* 이후 memberId, nickname등의 정보가 필요할 때에 헤더에 저장된 정보들을 활용하시면 될 것 같습니다.
+
+== 로그아웃 [ /memberLogout, GET ]
+
+include::{snippets}/logout/httpie-request.adoc[]
+
+* 로그아웃을 하실 때 해당 url을 호출하셔야 세션에서 삭제됩니다.
+이후에 헤더 정보들을 직접적으로 초기화하시면 될 것 같습니다.
+
+== 일반회원가입 [ /signup, POST ]
+
+=== request
+
+include::{snippets}/addMember/request-body.adoc[]
+
+include::{snippets}/addMember/request-fields.adoc[]
+
+== 개인 설정 [ /setting, GET ]
+
+=== request
+
+include::{snippets}/GetEditMember/httpie-request.adoc[]
+
+=== response
+
+include::{snippets}/GetEditMember/response-body.adoc[]
+
+include::{snippets}/GetEditMember/response-fields.adoc[]
+
+== 개인 설정 [ /setting, POST ]
+
+=== request
+
+include::{snippets}/PostEditMember/http-request.adoc[]
+
+include::{snippets}/PostEditMember/request-fields.adoc[]
+
+== 비밀번호 변경(설정화면에서) [ /changePassword, POST]
+
+=== request
+
+include::{snippets}/PostChangePw/http-request.adoc[]
+
+include::{snippets}/PostChangePw/request-fields.adoc[]
+
+== 회원 탈퇴 [ /withdraw, POST]
+
+=== request
+
+include::{snippets}/PostWithdraw/http-request.adoc[]
+
+include::{snippets}/PostWithdraw/request-fields.adoc[]
+
+
+== 인증 메일 보내기 [ /sendMail, POST]
+
+=== request
+
+include::{snippets}/PostSendMail/request-body.adoc[]
+
+include::{snippets}/PostSendMail/request-fields.adoc[]
+
+== ID찾기 [ /findId, POST]
+
+=== request
+
+include::{snippets}/PostFindId/request-body.adoc[]
+
+include::{snippets}/PostFindId/request-fields.adoc[]
+
+== PW찾기 [ /findPW, POST ]
+
+=== request
+
+include::{snippets}/PostFindPW/request-body.adoc[]
+
+include::{snippets}/PostFindPw/request-fields.adoc[]
+
+=== response
+
+include::{snippets}/PostFindPw/response-body.adoc[]
+
+include::{snippets}/PostFindPw/response-fields.adoc[]
+
+== pw 찾기하고 나서 비밀번호 변경하기 [ /changePasswordAfterFindPW, POST ]
+
+=== request
+
+include::{snippets}/PostChangePw2/request-body.adoc[]
+
+include::{snippets}/PostChangePw2/request-fields.adoc[]
+
+== 인증번호 검증하기 [ /certifyNumber, POST]
+
+=== request
+
+include::{snippets}/PostCheckNumber/request-body.adoc[]
+
+include::{snippets}/PostCheckNumber/request-fields.adoc[]
+
+== Username 중복 검증하기 [ /validateUsername, GET]
+
+=== request
+
+include::{snippets}/UsernameCheck/httpie-request.adoc[]
+
+include::{snippets}/UsernameCheck/request-parameters.adoc[]
+
+== Nickname 중복 검증하기 [ /validateNickname, GET]
+
+=== request
+
+include::{snippets}/NicknameCheck/httpie-request.adoc[]
+
+include::{snippets}/NicknameCheck/request-parameters.adoc[]
+

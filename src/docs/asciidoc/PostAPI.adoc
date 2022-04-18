@@ -1,0 +1,164 @@
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
+
+== 메인 [ / , GET]
+
+=== 1. request
+
+include::{snippets}/main/httpie-request.adoc[]
+
+include::{snippets}/main/request-parameters.adoc[]
+
+=== 2. response
+
+include::{snippets}/main/response-body.adoc[]
+
+include::{snippets}/main/response-fields.adoc[]
+
+== 글 작성(수정) [ /write, GET ]
+
+=== 1. request
+
+include::{snippets}/writeGet/httpie-request.adoc[]
+
+include::{snippets}/writeGet/request-parameters.adoc[]
+
+=== 2. response
+
+include::{snippets}/writeGet/response-body.adoc[]
+
+include::{snippets}/writeGet/response-fields.adoc[]
+
+== 글 작성(수정) [ /write, POST ]
+
+=== 1. request
+
+include::{snippets}/writePost/request-body.adoc[]
+
+include::{snippets}/writePost/request-fields.adoc[]
+
+=== 2. response
+
+include::{snippets}/writePost/response-body.adoc[]
+
+include::{snippets}/writePost/response-fields.adoc[]
+
+== 임시저장하기 [ /writeTemporary, POST ]
+
+=== request
+
+include::{snippets}/writeTemporaryPost/request-body.adoc[]
+
+include::{snippets}/writeTemporaryPost/request-fields.adoc[]
+
+=== response
+
+include::{snippets}/writeTemporaryPost/response-body.adoc[]
+
+include::{snippets}/writeTemporaryPost/response-fields.adoc[]
+
+== 개인 페이지 메인 보기 [ /{nickname}/main, GET ]
+
+=== 1. request
+
+include::{snippets}/GetPostsRead/httpie-request.adoc[]
+
+include::{snippets}/GetPostsRead/path-parameters.adoc[]
+
+include::{snippets}/GetPostsRead/request-parameters.adoc[]
+
+=== 2. response
+
+include::{snippets}/GetPostsRead/response-body.adoc[]
+
+include::{snippets}/GetPostsRead/response-fields.adoc[]
+
+
+== 시리즈 별 보기 [ /{nickname}/series, GET ]
+
+=== 1. request
+
+include::{snippets}/GetSeries/httpie-request.adoc[]
+
+include::{snippets}/GetSeries/path-parameters.adoc[]
+
+=== 2. response
+
+include::{snippets}/GetSeries/response-body.adoc[]
+
+include::{snippets}/GetSeries/response-fields.adoc[]
+
+== 시리즈에 속한 글들 보기 [ /{nickname}/series/{seriesName}, GET ]
+
+=== 1. request
+
+include::{snippets}/GetSeriesPost/httpie-request.adoc[]
+
+include::{snippets}/GetSeriesPost/path-parameters.adoc[]
+
+include::{snippets}/GetSeriesPost/request-parameters.adoc[]
+
+=== 2. response
+
+include::{snippets}/GetSeriesPost/response-body.adoc[]
+
+include::{snippets}/GetSeriesPost/response-fields.adoc[]
+
+== 게시글 상세보기 [ /{nickname}/read/{postId}, GET ]
+
+include::{snippets}/GetReadPost/httpie-request.adoc[]
+
+include::{snippets}/GetReadPost/path-parameters.adoc[]
+
+include::{snippets}/GetReadPost/response-body.adoc[]
+
+include::{snippets}/GetReadPost/response-fields.adoc[]
+
+== 글 삭제하기 [ /delete, POST ]
+
+=== response
+
+include::{snippets}/delete/httpie-request.adoc[]
+
+include::{snippets}/delete/request-parameters.adoc[]
+
+== 임시 저장 글 목록 [ /temp, GET ]
+
+=== 1. request
+
+include::{snippets}/GetTemp/httpie-request.adoc[]
+
+=== 2. response
+
+include::{snippets}/GetTemp/response-body.adoc[]
+
+include::{snippets}/GetTemp/response-fields.adoc[]
+
+== 좋아요 누른 게시글 [ /archive/like, GET ]
+
+=== 1. request
+
+include::{snippets}/GetLovePostRead/httpie-request.adoc[]
+
+=== 2. response
+
+include::{snippets}/GetLovePostRead/response-body.adoc[]
+
+include::{snippets}/GetLovePostRead/response-fields.adoc[]
+
+== 최근 읽은 게시글 [ /archive/recent, GET ]
+
+=== 1. request
+
+include::{snippets}/GetLookPostRead/httpie-request.adoc[]
+
+=== 2. response
+
+include::{snippets}/GetLookPostRead/response-body.adoc[]
+
+include::{snippets}/GetLookPostRead/response-fields.adoc[]
+
+
+
+
