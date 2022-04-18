@@ -8,7 +8,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'java'
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    //id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'teamexpress'
@@ -67,10 +67,10 @@ test {
     outputs.dir snippetsDir
 }
 
-asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
-}
+//asciidoctor {
+//    inputs.dir snippetsDir
+//    dependsOn test
+//}
 
 tasks.named('test') {
     useJUnitPlatform()
