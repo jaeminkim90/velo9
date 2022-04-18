@@ -102,7 +102,7 @@ public class InitDb {
 						.title("title" + i)
 						.introduce("introduce")
 						.content("content")
-						.access(PostAccess.PRIVATE)
+						.access(PostAccess.PUBLIC)
 						.series(series1)
 						.status(PostStatus.GENERAL)
 						.postThumbnail(postThumbnailRepository.save(new PostThumbnail()))
