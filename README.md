@@ -1,11 +1,10 @@
 # :pushpin: velo9
-### `velo9`는 단순하고 직관적인 사용이 가능한 `웹 기반 블로그 서비스`입니다.  
->[데모 사이트 바로가기](www.naver.com)
+### `velo9`는 단순하고 직관적인 사용이 가능한 `웹 기반 블로그 서비스`입니다.
 
 </br>
 
 ## 1. 제작 기간 & 참여 인원
-- 2022년 2월 21일 ~ 4월 16일
+- 2022.02 ~ 2022.04
 - 팀 프로젝트(5명)  
     - 백엔드: 김진욱 / 손찬우 / 김재민
     - 프런트엔드: 조민수 / 박찬하 
@@ -35,7 +34,7 @@
 
 <div markdown="1">
 
-![](https://velog.velcdn.com/images/woply/post/49b5e805-d230-4716-ae34-f7cb25185397/image.png)
+![](https://velog.velcdn.com/images/woply/post/50967538-8ed4-4b9b-b0e9-d0fc36d085b7/image.jpg)
 
 </div>
 </details>
@@ -47,10 +46,6 @@
 velo9는 블로그 활동에 필요한 다양한 편의 기능을 제공합니다.<br>
 누구나 쉽고 간편하게 `포스트 작성`이 가능하며, 태그와 시리즈 정보를 활용해 `포스트를 빠르게 탐색`할 수 있습니다.
 
-<details>
-<summary><b>핵심 기능 설명 펼치기</b></summary>
-
-<div markdown="1">
 
 ## 4.1. 포스트 작성 관련 기능
 
@@ -133,10 +128,6 @@ velo9는 블로그 활동에 필요한 다양한 편의 기능을 제공합니�
 </div>
 </details>
 
-<br>
-
-> ### 4.1.6. MarkDown 미리보기 :pushpin: [코드 확인](www.naver.com)
-  - 글 작성 시, MarkDown 문법이 적용된 포스트 결과물 미리보기를 지원합니다.<br>
 
 <br>
 
@@ -223,61 +214,5 @@ velo9는 블로그 활동에 필요한 다양한 편의 기능을 제공합니�
 
 <br>
 
-</div>
-</details>
-
-</br>
-
-## 5. 핵심 트러블 슈팅
-### 5.1. title
-- content
-
-<br>
-
-## 6. 그 외 트러블 슈팅
-<details>
-<summary>title</summary>
-<div markdown="1">
-
-- content
-
-</div>
-</details>
-
-<details>
-<summary>title</summary>
-<div markdown="1">
-
-- content
-
-</div>
-</details>
-
-<details>
-<summary>title</summary>
-<div markdown="1">
-
-- content
-
-</div>
-</details>
-
-<details>
-<summary>title</summary>
-<div markdown="1">
-
-- content
-
-</div>
-</details>
-
-<details>
-<summary>title</summary>
-<div markdown="1">
-
-- content
-
-</div>
-</details>
 
 <br>
