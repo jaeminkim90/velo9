@@ -8,7 +8,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'java'
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+    //id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
 group = 'teamexpress'
@@ -25,9 +25,9 @@ ext {
     snippetsDir = file('build/generated-snippets')
 }
 
-bootJar {
-    dependsOn asciidoctor
-}
+//bootJar {
+//    dependsOn asciidoctor
+//}
 
 repositories {
     mavenCentral()
@@ -67,10 +67,10 @@ test {
     outputs.dir snippetsDir
 }
 
-asciidoctor {
-    inputs.dir snippetsDir
-    dependsOn test
-}
+//asciidoctor {
+//    inputs.dir snippetsDir
+//    dependsOn test
+//}
 
 tasks.named('test') {
     useJUnitPlatform()
@@ -91,4 +91,26 @@ configurations {
 compileQuerydsl {
     options.annotationProcessorPath = configurations.querydsl
 }
+//querydsl 추가 끝
+
+//querydsl 추가 시작
+//def querydslDir = "$buildDir/generated/querydsl"
+//
+//querydsl {
+//    jpa = true
+//    querydslSourcesDir = querydslDir
+//}
+//sourceSets {
+//    main.java.srcDir querydslDir
+//}
+//compileQuerydsl{
+//    options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//configurations {
+//    compileOnly {
+//        extendsFrom annotationProcessor
+//    }
+//    querydsl.extendsFrom compileClasspath
+//}
 //querydsl 추가 끝
