@@ -25,4 +25,11 @@ public class PostThumbnail extends BaseEntity {
 	private String uuid;
 	private String name;
 	private String path;
+
+	public PostThumbnail edit(String uuid, String path, String name) {
+		this.uuid = uuid;
+		this.path = path;
+		this.name = name;
+		return this;
+	}
 }

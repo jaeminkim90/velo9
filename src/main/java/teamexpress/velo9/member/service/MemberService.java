@@ -238,4 +238,10 @@ public class MemberService {
 	private boolean isExistMember(Member member) {
 		return member != null;
 	}
+
+	public void findEmailByFinPW(MailDTO mailDTO) {
+		if (memberRepository.findByEmail(mailDTO.getEmail()).isEmpty()) {
+			throw new IllegalArgumentException("이메일과 일치하는 회원이 존재하지 않습니다.");
+		}
+	}
 }

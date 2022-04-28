@@ -18,12 +18,10 @@ import teamexpress.velo9.common.controller.BaseController;
 import teamexpress.velo9.common.domain.PostResult;
 import teamexpress.velo9.common.domain.Result;
 import teamexpress.velo9.member.security.oauth.SessionConst;
-import teamexpress.velo9.post.domain.Post;
-import teamexpress.velo9.post.dto.LookPostDTO;
 import teamexpress.velo9.post.dto.LoveDTO;
-import teamexpress.velo9.post.dto.LovePostDTO;
+import teamexpress.velo9.post.dto.PostArchiveDTO;
+import teamexpress.velo9.post.dto.PostLoadDTO;
 import teamexpress.velo9.post.dto.PostReadDTO;
-import teamexpress.velo9.post.dto.PostSaveDTO;
 import teamexpress.velo9.post.dto.PostWriteDTO;
 import teamexpress.velo9.post.dto.ReadDTO;
 import teamexpress.velo9.post.dto.SeriesDTO;
@@ -46,16 +44,14 @@ public class PostController extends BaseController {
 	private final TagService tagService;
 
 	@GetMapping("/write")
-	public PostWriteDTO write(@RequestParam(required = false) Long id) {
-		return id == null ? null : postService.findPostById(id);
+	public PostLoadDTO write(@RequestParam(required = false) Long id) {
+		return id != null ? postService.findPostById(id) : null;
 	}
 
 	@PostMapping("/write")
-	public Result write(@Valid @RequestBody PostSaveDTO postSaveDTO, HttpSession session) {
-		Post post = postService.write(postSaveDTO, getMemberId(session));
-		tagService.addTags(post, postSaveDTO.getTags());
-		tagService.removeUselessTags();
-		return new Result<>(post.getId());
+	public Result<Long> write(@Valid @RequestBody PostWriteDTO postWriteDTO, HttpSession session) {
+		Long postId = postService.write(postWriteDTO, getMemberId(session));
+		return new Result<>(postId);
 	}
 
 	@PostMapping("/writeTemporary")
@@ -66,7 +62,6 @@ public class PostController extends BaseController {
 	@PostMapping("/delete")
 	public void delete(@RequestParam Long id) {
 		postService.remove(id);
-		tagService.removeUselessTags();
 	}
 
 	@GetMapping("/{nickname}/series")
@@ -94,10 +89,11 @@ public class PostController extends BaseController {
 	@GetMapping("/{nickname}/main")
 	public PostResult main(@PathVariable String nickname,
 		@RequestParam(required = false) String tagName,
-		@RequestParam(defaultValue = "0") int page) {
-
+		@RequestParam(defaultValue = "0") int page,
+		HttpSession session) {
 		PageRequest pageRequest = PageRequest.of(page, SIZE, Sort.by(Direction.DESC, "createdDate"));
-		Slice<PostReadDTO> posts = postService.findMainPost(nickname, tagName, pageRequest);
+		Long memberId = (Long) session.getAttribute(SessionConst.LOGIN_MEMBER);
+		Slice<PostReadDTO> posts = postService.findMainPost(nickname, tagName, pageRequest, memberId);
 		List<TagDTO> usedTags = tagService.findAllTags(nickname);
 		return new PostResult(posts, usedTags);
 	}
@@ -113,13 +109,13 @@ public class PostController extends BaseController {
 	}
 
 	@GetMapping("/archive/like")
-	public Slice<LovePostDTO> lovePostRead(@RequestParam(defaultValue = "0") int page, HttpSession session) {
+	public Slice<PostArchiveDTO> lovePostRead(@RequestParam(defaultValue = "0") int page, HttpSession session) {
 		PageRequest pageRequest = PageRequest.of(page, ARCHIVE_SIZE, Sort.by(Direction.DESC, "createdDate"));
 		return postService.findLovePosts(getMemberId(session), pageRequest);
 	}
 
 	@GetMapping("/archive/recent")
-	public Slice<LookPostDTO> lookPostRead(@RequestParam(defaultValue = "0") int page, HttpSession session) {
+	public Slice<PostArchiveDTO> lookPostRead(@RequestParam(defaultValue = "0") int page, HttpSession session) {
 		PageRequest pageRequest = PageRequest.of(page, ARCHIVE_SIZE, Sort.by(Direction.DESC, "createdDate"));
 		return postService.findReadPost(getMemberId(session), pageRequest);
 	}

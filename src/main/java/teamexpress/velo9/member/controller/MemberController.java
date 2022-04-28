@@ -47,11 +47,14 @@ public class MemberController extends BaseController {
 
 	@PostMapping("/sendMail")
 	public void sendMail(@Valid @RequestBody MailDTO mailDTO, HttpSession session) {
-		String randomNumber = getNumber();
 		memberService.findEmail(mailDTO);
-		mailService.sendNumberMail(mailDTO.getEmail(), randomNumber);
-		session.setAttribute(SessionConst.RANDOM_NUMBER, randomNumber);
-		session.setMaxInactiveInterval(INTERVAL);
+		sendRandomNumber(mailDTO, session);
+	}
+
+	@PostMapping("/sendMailPw")
+	public void sendMailByFindPw(@Valid @RequestBody MailDTO mailDTO, HttpSession session) {
+		memberService.findEmailByFinPW(mailDTO);
+		sendRandomNumber(mailDTO, session);
 	}
 
 	@PostMapping("/certifyNumber")
@@ -133,7 +136,6 @@ public class MemberController extends BaseController {
 
 	private void checkInputNumber(NumberDTO numberDTO, HttpSession session) {
 		String certificationNumber = (String) session.getAttribute(SessionConst.RANDOM_NUMBER);
-
 		if (!isEquals(certificationNumber, numberDTO)) {
 			throw new IllegalArgumentException("인증번호가 일치하지 않습니다.");
 		}
@@ -141,5 +143,12 @@ public class MemberController extends BaseController {
 
 	private boolean isEquals(String certificationNumber, NumberDTO numberDTO) {
 		return certificationNumber.equals(numberDTO.getInputNumber());
+	}
+
+	private void sendRandomNumber(MailDTO mailDTO, HttpSession session) {
+		String randomNumber = getNumber();
+		mailService.sendNumberMail(mailDTO.getEmail(), randomNumber);
+		session.setAttribute(SessionConst.RANDOM_NUMBER, randomNumber);
+		session.setMaxInactiveInterval(INTERVAL);
 	}
 }

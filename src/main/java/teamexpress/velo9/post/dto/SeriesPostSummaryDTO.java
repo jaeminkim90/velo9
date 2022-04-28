@@ -30,6 +30,7 @@ public class SeriesPostSummaryDTO {
 		createdDate = post.getCreatedDate();
 		thumbnail = makeThumbnail(post.getPostThumbnail());
 		tags = postTagList.stream()
+			.filter(postTag -> post.getId().equals(postTag.getPost().getId()))
 			.map(postTag -> postTag.getTag().getName())
 			.collect(Collectors.toList());
 	}

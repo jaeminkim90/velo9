@@ -1,62 +1,73 @@
 package teamexpress.velo9.post.dto;
 
 import java.util.List;
-import java.util.stream.Collectors;
+import javax.validation.constraints.NotBlank;
 import lombok.Data;
-import teamexpress.velo9.common.dto.ThumbnailResponseDTO;
+import lombok.NoArgsConstructor;
+import org.springframework.util.StringUtils;
+import teamexpress.velo9.member.domain.Member;
 import teamexpress.velo9.post.domain.Post;
-import teamexpress.velo9.post.domain.PostTag;
+import teamexpress.velo9.post.domain.PostAccess;
+import teamexpress.velo9.post.domain.PostStatus;
 import teamexpress.velo9.post.domain.PostThumbnail;
+import teamexpress.velo9.post.domain.Series;
 
 @Data
+@NoArgsConstructor
 public class PostWriteDTO {
 
+	private static final int MAX_INTRODUCE_LENGTH = 150;
+	private static final int FIRST_INDEX = 0;
+
 	private Long postId;
+	@NotBlank
 	private String title;
 	private String introduce;
+	@NotBlank
 	private String content;
+	@NotBlank
 	private String access;
 
-	private SeriesReadDTO series;
+	private Long seriesId;
 	private List<String> tags;
 
-	private ThumbnailResponseDTO thumbnail;
-	private TemporaryPostReadDTO temporary;
+	private String thumbnailFileName;
 
-	public PostWriteDTO(Post post, List<PostTag> postTags) {
-		this.postId = post.getId();
-		this.title = post.getTitle();
-		this.introduce = post.getIntroduce();
-		this.content = post.getContent();
+	public Post toPost(Member member, Series series, PostThumbnail postThumbnail) {
+		makeIntroduce();
 
-		if (post.getAccess() != null) {
-			this.access = post.getAccess().name();
-		}
-
-		if (post.getSeries() != null) {
-			this.series = new SeriesReadDTO(post.getSeries());
-		}
-
-		this.tags = postTags.stream()
-			.map(postTag -> postTag.getTag().getName())
-			.collect(Collectors.toList());
-
-		this.thumbnail = makeThumbnail(post.getPostThumbnail());
-
-		if (post.getTemporaryPost() != null) {
-			this.temporary = new TemporaryPostReadDTO(post.getTemporaryPost());
-		}
+		return Post.builder()
+			.title(this.title)
+			.introduce(this.introduce)
+			.content(this.content)
+			.status(PostStatus.GENERAL)
+			.access(makeAccess(this.access))
+			.member(member)
+			.series(series)
+			.postThumbnail(postThumbnail)
+			.build();
 	}
 
-	private ThumbnailResponseDTO makeThumbnail(PostThumbnail postThumbnail) {
-		ThumbnailResponseDTO result = null;
-
-		if (postThumbnail != null) {
-			result = new ThumbnailResponseDTO(
-				new PostThumbnailDTO(postThumbnail)
-					.getSFileNameWithPath());
+	public void makeIntroduce() {
+		if (checkIntroduce()) {
+			return;
 		}
+		if (smallerThanMax(this.content)) {
+			this.introduce = this.content;
+			return;
+		}
+		this.introduce = this.content.substring(FIRST_INDEX, MAX_INTRODUCE_LENGTH);
+	}
 
-		return result;
+	private boolean smallerThanMax(String content) {
+		return content.length() < MAX_INTRODUCE_LENGTH;
+	}
+
+	private boolean checkIntroduce() {
+		return StringUtils.hasText(this.introduce);
+	}
+
+	private PostAccess makeAccess(String access) {
+		return this.access != null ? PostAccess.valueOf(access) : PostAccess.PUBLIC;
 	}
 }

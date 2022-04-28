@@ -32,13 +32,13 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
 	}
 
 	@Override
-	public Slice<Post> findPost(String nickname, String tagName, Pageable pageable) {
+	public Slice<Post> findPost(String nickname, String tagName, Pageable pageable, boolean checkOwner) {
 		List<Post> content =
 			queryFactory.selectFrom(post)
 				.leftJoin(post.postThumbnail).fetchJoin()
 				.where(nicknameEq(nickname)
 					.and(searchTag(tagName))
-					.and(openPost()))
+					.and(openPostCheckOwner(checkOwner)))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize() + 1)
 				.fetch();
@@ -53,6 +53,8 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
 		JPAQuery<Post> query = queryFactory
 			.selectFrom(post)
 			.join(post.member).fetchJoin()
+			.join(postTag)
+			.on(post.id.eq(postTag.post.id))
 			.where(searchMain(condition))
 			.where(openPost())
 			.offset(pageable.getOffset())
@@ -69,6 +71,7 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
 	public Slice<Post> findByJoinLove(Long memberId, Pageable pageable) {
 		JPAQuery<Post> query = queryFactory
 			.selectFrom(post)
+			.join(post.member).fetchJoin()
 			.join(love)
 			.on(post.id.eq(love.post.id))
 			.join(post.member)
@@ -194,6 +197,10 @@ public class PostRepositoryCustomImpl extends QuerydslRepositorySupport implemen
 
 	private BooleanBuilder access() {
 		return nullSafeBuilder(() -> post.access.eq(PostAccess.PUBLIC));
+	}
+
+	private BooleanBuilder openPostCheckOwner(boolean checkOwner) {
+		return checkOwner ? status() : openPost();
 	}
 
 	private BooleanBuilder nullSafeBuilder(Supplier<BooleanExpression> f) {

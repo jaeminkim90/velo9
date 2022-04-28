@@ -31,8 +31,4 @@ public class Tag extends BaseEntity {
 	@OneToMany(mappedBy = "tag")
 	@JsonIgnore
 	private List<PostTag> postTags = new ArrayList<>();
-
-	public Tag(String name) {
-		this.name = name;
-	}
 }

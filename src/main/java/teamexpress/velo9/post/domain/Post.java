@@ -22,6 +22,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -82,23 +83,33 @@ public class Post {
 
 	public void edit(String title, String introduce, String content, String access, Series series, PostThumbnail postThumbnail) {
 		this.title = title;
-		if (StringUtils.hasText(introduce)) {
-			this.introduce = introduce;
-		}
+		this.introduce = introduce;
 		this.content = content;
-		if (StringUtils.hasText(access)) {
-			this.access = PostAccess.valueOf(access);
-		}
-		if (this.status == PostStatus.TEMPORARY) {
-			this.createdDate = LocalDateTime.now();
-		}
+		this.access = makeAccess(access);
+		this.createdDate = makeDate();
 		this.status = PostStatus.GENERAL;
 		this.series = series;
 		this.postThumbnail = postThumbnail;
 		this.temporaryPost = null;
 	}
 
+	private PostAccess makeAccess(String access) {
+		return StringUtils.hasText(access) ? PostAccess.valueOf(access) : this.access;
+	}
+
+	private LocalDateTime makeDate() {
+		return this.status == PostStatus.TEMPORARY ? LocalDateTime.now() : this.createdDate;
+	}
+
 	public void addViewCount() {
 		this.viewCount++;
+	}
+
+	public void updateTempPost(TemporaryPost temporaryPost) {
+		this.temporaryPost = temporaryPost;
+	}
+
+	public void updateLoveCount(int loveCount) {
+		this.loveCount = loveCount;
 	}
 }

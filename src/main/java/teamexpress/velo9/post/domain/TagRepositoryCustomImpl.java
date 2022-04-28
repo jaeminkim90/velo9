@@ -24,6 +24,14 @@ public class TagRepositoryCustomImpl extends QuerydslRepositorySupport implement
 		this.queryFactory = new JPAQueryFactory(em);
 	}
 
+	private static BooleanBuilder nullSafeBuilder(Supplier<BooleanExpression> f) {
+		try {
+			return new BooleanBuilder(f.get());
+		} catch (NullPointerException e) {
+			return new BooleanBuilder();
+		}
+	}
+
 	@Override
 	public Page<Tag> searchTag(SearchCondition searchCondition, Pageable pageable) {
 		JPAQuery<Tag> query = queryFactory.
@@ -35,15 +43,16 @@ public class TagRepositoryCustomImpl extends QuerydslRepositorySupport implement
 		return PageableExecutionUtils.getPage(content, pageable, query::fetchCount);
 	}
 
+	@Override
+	public void deleteByIds(List<Long> ids) {
+		queryFactory.delete(tag).where(tagIdIn(ids)).execute();
+	}
+
 	private BooleanBuilder tagContains(String content) {
 		return nullSafeBuilder(() -> tag.name.contains(content));
 	}
 
-	private static BooleanBuilder nullSafeBuilder(Supplier<BooleanExpression> f) {
-		try {
-			return new BooleanBuilder(f.get());
-		} catch (NullPointerException e) {
-			return new BooleanBuilder();
-		}
+	private BooleanBuilder tagIdIn(List<Long> ids) {
+		return nullSafeBuilder(() -> tag.id.in(ids));
 	}
 }

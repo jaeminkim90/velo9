@@ -17,6 +17,13 @@ include::{snippets}/header/response-fields.adoc[]
 
 * 이후 memberId, nickname등의 정보가 필요할 때에 헤더에 저장된 정보들을 활용하시면 될 것 같습니다.
 
+== 로그인 [ /login, POST]
+
+include::{snippets}/login/request-body.adoc[]
+
+include::{snippets}/login/request-fields.adoc[]
+
+
 == 로그아웃 [ /memberLogout, GET ]
 
 include::{snippets}/logout/httpie-request.adoc[]

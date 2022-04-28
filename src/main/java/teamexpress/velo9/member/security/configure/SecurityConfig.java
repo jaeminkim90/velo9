@@ -21,8 +21,8 @@ import teamexpress.velo9.member.security.handler.CustomAccessDeniedHandler;
 import teamexpress.velo9.member.security.handler.CustomAuthenticationFailureHandler;
 import teamexpress.velo9.member.security.handler.CustomAuthenticationSuccessHandler;
 import teamexpress.velo9.member.security.oauth.CustomOAuth2UserService;
-import teamexpress.velo9.member.security.provider.CustomAuthenticationProvider;
 import teamexpress.velo9.member.security.oauth.OAuth2SuccessHandler;
+import teamexpress.velo9.member.security.provider.CustomAuthenticationProvider;
 
 @RequiredArgsConstructor
 @Configuration
@@ -70,7 +70,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.csrf().disable()
 			.authorizeRequests()
 			.antMatchers("/login", "/", "/getHeaderInfo", "/signup", "/sendMail", "/certifyNumber", "/checkFirstLogin", "/socialSignup", "/findId", "/findPw", "/changePasswordAfterFindPW", "/memberLogout", "/validateUsername",
-				"/validateNickname","/**")
+				"/validateNickname", "/**")
 			.permitAll()
 			.antMatchers("/{nickname}/series", "/{nickname}/series/{seriesName}", "/{nickname}/main", "/{nickname}/read/{postId}")
 			.permitAll()
